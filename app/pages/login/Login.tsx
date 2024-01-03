@@ -1,18 +1,27 @@
 import {
+  Alert,
   StyleSheet,
   Text,
-  TextInput,
   TouchableOpacity,
   View,
 } from 'react-native';
 import React, {useState} from 'react';
 import {colors} from '../../theme/colors';
+import { TextInput } from 'react-native-paper';
 
-const Login = () => {
+
+const Login = ({navigation}) => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
 
-  const login = () => {};
+  const login = () => {
+    if (email.trim() === '' || password.trim() === '') {
+      Alert.alert('Validation Error', 'Please enter both email and password.');
+      return;
+    }
+    navigation.navigate('SignUp');
+    // TODO: Add actual login functionality here
+  };
 
   return (
     <View style={styles.container}>
@@ -22,23 +31,25 @@ const Login = () => {
         style={styles.textInput}
         value={email}
         onChangeText={setEmail}
-        placeholder="email"
+        label="email"
+        mode='outlined'
       />
       <TextInput
         style={styles.textInput}
         value={password}
         onChangeText={setPassword}
-        placeholder="password"
+        label="password"
         secureTextEntry
+        mode='outlined'
       />
 
       <TouchableOpacity style={styles.button} onPress={login}>
-        <Text>Login</Text>
+        <Text style={{color: 'black'}}>Login</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity onPress={login}>
+      <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
         <View style={styles.signUpButtonContainer}>
-          <Text>Dont have an account? </Text>
+          <Text style={{color: 'black'}}>Dont have an account? </Text>
           <Text style={styles.signUpText}>Sign up</Text>
         </View>
       </TouchableOpacity>
@@ -55,14 +66,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   textInput: {
-    marginVertical: 15,
-    paddingVertical: 10,
-    paddingHorizontal: 25,
-    color: 'black',
-    borderWidth: 1,
-    borderRadius: 15,
-    borderColor: colors.ctaButton,
-    width: 250
+    marginVertical: 10,
+    width: 250,
   },
   button: {
     paddingVertical: 10,
